@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.entity.Admin" table="d_admin" lazy="false">
+		<id name="adminId" type="java.lang.Integer">
+			<column name="admin_id" precision="10" scale="0"/>
+			<generator class="sequence">
+				<param name="sequence">seq_admin</param>
+			</generator>
+		</id>
+		<property name="password" type="java.lang.String">
+			<column name="password" length="20" not-null="true"/>
+		</property>
+		<property name="lastLoginTime" type="java.sql.Timestamp">
+			<column name="last_login_time" />
+		</property>
+		<property name="adminStatus" type="java.lang.Integer">
+			<column name="admin_status" precision="1" scale="0" not-null="true"/>
+		</property>
+	</class>
+</hibernate-mapping>

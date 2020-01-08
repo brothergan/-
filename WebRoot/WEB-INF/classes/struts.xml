@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 配置为开发模式 -->  
+    <constant name="struts.devMode" value="false" />  
+    <!-- 把扩展名配置为action -->  
+    <constant name="struts.action.extension" value="action" />  
+    <!-- 把主题配置为simple -->  
+    <constant name="struts.ui.theme" value="simple" />
+	
+	<package name="defaultPackage" namespace="/" extends="struts-default">
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult" />
+		</result-types>
+		<global-results>
+			<result name="jsonMap" type="json">
+				<param name="root">jsonMap</param>
+			</result>
+		</global-results>
+	</package>
+	
+	<package name="login-register" namespace="/" extends="defaultPackage">
+		<action name="login" class="loginAction" method="login">
+		</action>
+		<action name="register" class="loginAction" method="register">
+		</action>
+		<action name="quit" class="loginAction" method="quit">
+			<result>/login-demo.jsp</result>
+		</action>
+	</package>
+	<package name="document" namespace="/" extends="defaultPackage">
+		<action name="uploadDocument" class="documentAction" method="addDocument">
+			<param name="savePath">upload</param>
+		</action>
+		<action name="myDocumentList" class="documentAction" method="ListDocumentByUser">
+		</action>
+		<action name="DocumentList" class="documentAction" method="ListDocumentByCondition">
+		</action>
+		<action name="loadDocument" class="documentAction" method="loadDocumentById">
+		</action>
+		<action name="updateDocument" class="documentAction" method="updateDocument">
+			<param name="savePath">upload</param>
+		</action>
+		<action name="deleteDocument" class="documentAction" method="deleteDocument">
+			<param name="savePath">upload</param>
+		</action>
+		<action name="downloadDocument" class="documentAction" method="downloadDocument">
+			<param name="downPath">upload</param>
+			<result type="stream">
+				<param name="contentType">application/octer-stream</param>
+				<param name="contentDisposition">attachment;filename=${fileName}</param>
+				<param name="inputName">inputStream</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+		<action name="lockDocument" class="documentAction" method="lockDocument">
+		</action>
+		<action name="unlockDocument" class="documentAction" method="unlockDocument">
+		</action>
+	</package>
+	<package name="annotation" namespace="/" extends="defaultPackage">
+		<action name="annotationList" class="annotationAction" method="listAnnotation">
+		</action>
+		<action name="loadAnnotation" class="annotationAction" method="loadAnnotationById">
+		</action>
+		<action name="publishAnnotation" class="annotationAction" method="publishAnnotation">
+		</action>
+	</package>
+	<package name="userDetail" namespace="/" extends="defaultPackage">
+		<action name="getUserDetail" class="userDetailAction" method="getUserDetailById">
+		</action>
+		<action name="updateUserInfo" class="userDetailAction" method="updateUserInfo">
+		</action>
+	</package>
+	<package name="inform" namespace="/" extends="defaultPackage">
+		<action name="informDocument" class="informAction" method="informDocument">
+		</action>
+		<action name="informUser" class="informAction" method="informUser">
+		</action>
+		<action name="InformList" class="informAction" method="informList">
+		</action>
+		<action name="loadInform" class="informAction" method="loadInformById">
+		</action>
+	</package>
+	<package name="user" namespace="/" extends="defaultPackage">
+		<action name="getUserMessage" class="userAction" method="getUserMessage">
+		</action>
+		<action name="updateUserPassword" class="userAction" method="updateUserPassword">
+		</action>
+		<action name="UserList" class="userAction" method="listUser">
+		</action>
+		<action name="suspendUser" class="userAction" method="suspendUser">
+		</action>
+		<action name="activeUser" class="userAction" method="activeUser">
+		</action>
+		
+	</package>
+	<package name="admin" namespace="/" extends="defaultPackage">
+		<action name="updateAdminPassword" class="adminAction" method="updateAdminPassword">
+		</action>
+		<action name="AdminList" class="adminAction" method="listAdmin">
+		</action>
+		<action name="loadAdmin" class="adminAction" method="loadAdminById">
+		</action>
+		<action name="suspendAdmin" class="adminAction" method="suspendAdmin">
+		</action>
+		<action name="activeAdmin" class="adminAction" method="activeAdmin">
+		</action>
+		<action name="addAdmin" class="adminAction" method="addAdmin">
+		</action>
+	</package>
+	<package name="privilege" namespace="/" extends="defaultPackage">
+		<action name="loadPrivileges" class="privilegeAction" method="loadPrivileges">
+		</action>
+		<action name="updatePrivileges" class="privilegeAction" method="updatePrivileges">
+		</action>
+	</package>
+</struts>

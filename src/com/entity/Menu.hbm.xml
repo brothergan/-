@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.entity.Menu" table="d_menu" lazy="false">
+		<id name="menuId" type="java.lang.Integer">
+			<column name="menu_id" precision="10" scale="0" />
+			<generator class="sequence">
+				<param name="sequence">seq_menu</param>
+			</generator>
+		</id>
+		<property name="menuName" type="java.lang.String">
+			<column name="menu_name" length="30" not-null="true"/>
+		</property>
+		<property name="menuUrl" type="java.lang.String">
+			<column name="menu_url" length="500"/>
+		</property>
+		<property name="menuIcon" type="java.lang.String">
+			<column name="menu_icon" length="100"/>
+		</property>
+		<property name="menuStatus" type="java.lang.Integer">
+			<column name="menu_status" precision="1" scale="0" not-null="true"/>
+		</property>
+		<many-to-one name="parentMenu" class="com.entity.Menu" column="parent_id" lazy="false"/>
+		<set name="childMenus" inverse="true" lazy="false">
+			<key>
+				<column name="parent_id"/>
+			</key>
+			<one-to-many class="com.entity.Menu"/>
+		</set>
+		<set name="buttons" inverse="true" lazy="false">
+			<key>
+				<column name="menu_id"/>
+			</key>
+			<one-to-many class="com.entity.Button"/>
+		</set>
+	</class>
+</hibernate-mapping>

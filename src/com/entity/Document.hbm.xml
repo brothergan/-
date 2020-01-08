@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.entity.Document" table="d_document" lazy="false">
+		<id name="documentId" type="java.lang.Integer">
+			<column name="document_id" precision="10" scale="0" />
+			<generator class="sequence">
+				<param name="sequence">seq_document</param>
+			</generator>
+		</id>
+		<property name="documentType" type="java.lang.String">
+			<column name="document_type" length="30" not-null="true"/>
+		</property>
+		<property name="documentName" type="java.lang.String">
+			<column name="document_name" length="30" not-null="true"/>
+		</property>
+		<property name="documentDesc" type="java.lang.String">
+			<column name="document_desc" length="500"/>
+		</property>
+		<property name="documentRsc" type="java.lang.String">
+			<column name="document_rsc" length="500" not-null="true"/>
+		</property>
+		<property name="downloadTime" type="java.lang.Integer">
+			<column name="download_time" precision="5" scale="0" not-null="true"/>
+		</property>
+		<property name="downloadStatus" type="java.lang.Integer">
+			<column name="download_status" precision="1" scale="0" not-null="true"/>
+		</property>
+		<property name="documentStatus" type="java.lang.Integer">
+			<column name="document_status" precision="1" scale="0" not-null="true"/>
+		</property>
+		<property name="uploadTime" type="java.sql.Timestamp">
+			<column name="upload_time" not-null="true" />
+		</property>
+		<property name="updateTime" type="java.sql.Timestamp">
+			<column name="update_time" not-null="true" />
+		</property>
+		<many-to-one name="user" class="com.entity.User" column="upload_user_id" lazy="false"/>
+	</class>
+</hibernate-mapping>

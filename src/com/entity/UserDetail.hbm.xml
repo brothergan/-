@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.entity.UserDetail" table="d_user_detail" lazy="false">
+		<id name="userId" type="java.lang.Integer">
+			<column name="user_id" precision="10" scale="0" />
+			<generator class="foreign">
+				<param name="property">user</param>
+			</generator>
+		</id>
+		<property name="sex" type="java.lang.Integer">
+			<column name="sex" precision="1" scale="0" not-null="true"/>
+		</property>
+		<property name="telephone" type="java.lang.String">
+			<column name="telephone" length="13"/>
+		</property>
+		<property name="mail" type="java.lang.String">
+			<column name="mail" length="30"/>
+		</property>
+		<property name="sign" type="java.lang.String">
+			<column name="sign" length="50"/>
+		</property>
+		<property name="picPath" type="java.lang.String">
+			<column name="pic_path" length="500"/>
+		</property>
+		<one-to-one name="user" class="com.entity.User" constrained="true" lazy="false"/>
+	</class>
+</hibernate-mapping>

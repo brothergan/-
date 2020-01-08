@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+      <!-- 导入数据源配置文件 -->
+      <import resource="applicationContext-dataSource.xml"/>
+      <!-- 配置sessionFactory：使用实体映射文件配置LocalSessionFactoryBean -->
+      <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+      	<!-- 配置数据源 -->
+      	<property name="dataSource" ref="dataSource" />
+      	<!-- 指定hibernate映射文件目录路径 -->
+      	<property name="mappingDirectoryLocations">
+      		<list>
+      			<value>classpath:com/entity/</value>
+      		</list>
+      	</property>
+      	<!-- 配置hibernate的属性 -->
+      	<property name="hibernateProperties">
+    		<props>
+    			<prop key="hibernate.dialect">
+    				org.hibernate.dialect.Oracle10gDialect
+    			</prop>
+    			<prop key="hibernate.show_sql">
+    				true
+    			</prop>
+    			<prop key="hibernate.format_sql">
+    				true
+    			</prop>
+    			<prop key="hibernate.hbm2ddl.auto">
+    				update
+    			</prop>
+    		</props>
+    	</property>
+      </bean>
+
+	<!-- 配置AOP声明式事务 -->
+    <!-- 配置事务管理 -->
+    <bean id="txManager"
+    	class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    	<property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <!-- 配置通知 -->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+    	<tx:attributes>
+    		<tx:method name="find*" read-only="true" />
+    		<!-- propagation：事务的传播属性 -->
+    		<tx:method name="save*" propagation="REQUIRED"  />
+    		<tx:method name="update*" propagation="REQUIRED" />
+    		<tx:method name="delete*" propagation="REQUIRED" />
+    		<tx:method name="*" read-only="true" />
+    	</tx:attributes>
+    </tx:advice>
+    <aop:config>
+    	<!-- 配置切入点 -->
+    	<aop:pointcut expression="execution(public * com.service.*.*(..))" id="pointCut"/>
+    	<aop:advisor advice-ref="txAdvice" pointcut-ref="pointCut" />
+    </aop:config>
+    
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <property name="maxInMemorySize" value="10240000"></property>
+    </bean>
+    
+    <!-- 配置DAO -->
+    <bean id="adminDao" class="com.dao.impl.AdminDaoImpl">
+    	<!-- 所有的dao继承了HibernateDaoSupport，因此要为其注入sessionFactory -->
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="annotationDao" class="com.dao.impl.AnnotationDaoImpl">
+    	<!-- 所有的dao继承了HibernateDaoSupport，因此要为其注入sessionFactory -->
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="buttonDao" class="com.dao.impl.ButtonDaoImpl">
+    	<!-- 所有的dao继承了HibernateDaoSupport，因此要为其注入sessionFactory -->
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="documentDao" class="com.dao.impl.DocumentDaoImpl">
+    	<!-- 所有的dao继承了HibernateDaoSupport，因此要为其注入sessionFactory -->
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="informDao" class="com.dao.impl.InformDaoImpl">
+    	<!-- 所有的dao继承了HibernateDaoSupport，因此要为其注入sessionFactory -->
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="menuDao" class="com.dao.impl.MenuDaoImpl">
+    	<!-- 所有的dao继承了HibernateDaoSupport，因此要为其注入sessionFactory -->
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="privilegeDao" class="com.dao.impl.PrivilegeDaoImpl">
+    	<!-- 所有的dao继承了HibernateDaoSupport，因此要为其注入sessionFactory -->
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="userDao" class="com.dao.impl.UserDaoImpl">
+    	<!-- 所有的dao继承了HibernateDaoSupport，因此要为其注入sessionFactory -->
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <bean id="userDetailDao" class="com.dao.impl.UserDetailDaoImpl">
+    	<!-- 所有的dao继承了HibernateDaoSupport，因此要为其注入sessionFactory -->
+    	<property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <!-- 配置service -->
+    <bean id="adminService" class="com.service.impl.AdminServiceImpl">
+    	<property name="adminDao" ref="adminDao"></property>
+    </bean>
+    <bean id="annotationService" class="com.service.impl.AnnotationServiceImpl">
+    	<property name="annotationDao" ref="annotationDao"></property>
+    </bean>
+    <bean id="buttonService" class="com.service.impl.ButtonServiceImpl">
+    	<property name="buttonDao" ref="buttonDao"></property>
+    </bean>
+    <bean id="documentService" class="com.service.impl.DocumentServiceImpl">
+    	<property name="documentDao" ref="documentDao"></property>
+    </bean>
+    <bean id="informService" class="com.service.impl.InformServiceImpl">
+    	<property name="informDao" ref="informDao"></property>
+    </bean>
+    <bean id="menuService" class="com.service.impl.MenuServiceImpl">
+    	<property name="menuDao" ref="menuDao"></property>
+    </bean>
+    <bean id="privilegeService" class="com.service.impl.PrivilegeServiceImpl">
+    	<property name="privilegeDao" ref="privilegeDao"></property>
+    </bean>
+    <bean id="userService" class="com.service.impl.UserServiceImpl">
+    	<property name="userDao" ref="userDao"></property>
+    </bean>
+    <bean id="userDetailService" class="com.service.impl.UserDetailServiceImpl">
+    	<property name="userDetailDao" ref="userDetailDao"></property>
+    </bean>
+    
+    <!-- 在spring配置文件中配置action Action一定要配置scope="prototype" -->
+    <bean id="testAction" class="com.web.action.TestAction" scope="prototype">
+    	<property name="userService" ref="userService" />
+    </bean>
+    <bean id="loginAction" class="com.web.action.LoginAction" scope="prototype">
+    	<property name="userService" ref="userService" />
+    	<property name="adminService" ref="adminService" />
+    	<property name="privilegeService" ref="privilegeService" />
+    	<property name="menuService" ref="menuService" />
+    	<property name="buttonService" ref="buttonService" />
+    </bean>
+    <bean id="documentAction" class="com.web.action.DocumentAction" scope="prototype">
+    	<property name="documentService" ref="documentService" />
+    </bean>
+    <bean id="annotationAction" class="com.web.action.AnnotationAction" scope="prototype">
+    	<property name="annotationService" ref="annotationService" />
+    </bean>
+    <bean id="userDetailAction" class="com.web.action.UserDetailAction" scope="prototype">
+    	<property name="userDetailService" ref="userDetailService" />
+    	<property name="userService" ref="userService" />
+    </bean>
+    <bean id="informAction" class="com.web.action.InformAction" scope="prototype">
+    	<property name="informService" ref="informService" />
+    	<property name="userService" ref="userService" />
+    	<property name="documentService" ref="documentService" />
+    </bean>
+    <bean id="userAction" class="com.web.action.UserAction" scope="prototype">
+    	<property name="userDetailService" ref="userDetailService" />
+    	<property name="userService" ref="userService" />
+    </bean>
+    <bean id="adminAction" class="com.web.action.AdminAction" scope="prototype">
+    	<property name="adminService" ref="adminService" />
+    </bean>
+    <bean id="privilegeAction" class="com.web.action.PrivilegeAction" scope="prototype">
+    	<property name="menuService" ref="menuService" />
+    	<property name="buttonService" ref="buttonService" />
+    	<property name="privilegeService" ref="privilegeService" />
+    </bean>
+</beans>

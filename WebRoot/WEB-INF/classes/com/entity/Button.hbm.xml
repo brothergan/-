@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.entity.Button" table="d_button" lazy="false">
+		<id name="buttonId" type="java.lang.Integer">
+			<column name="button_id" precision="10" scale="0" />
+			<generator class="sequence">
+				<param name="sequence">seq_button</param>
+			</generator>
+		</id>
+		<property name="buttonName" type="java.lang.String">
+			<column name="button_name" length="30" not-null="true"/>
+		</property>
+		<property name="buttonUrl" type="java.lang.String">
+			<column name="button_url" length="500" not-null="true"/>
+		</property>
+		<property name="buttonStatus" type="java.lang.Integer">
+			<column name="button_status" precision="1" scale="0" not-null="true"/>
+		</property>
+		<many-to-one name="menu" class="com.entity.Menu" column="menu_id" lazy="false"/>
+	</class>
+</hibernate-mapping>

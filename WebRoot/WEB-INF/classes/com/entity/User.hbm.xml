@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.entity.User" table="d_user" lazy="false">
+		<id name="userId" type="java.lang.Integer">
+			<column name="user_id" precision="10" scale="0"/>
+			<generator class="sequence">
+				<param name="sequence">seq_user</param>
+			</generator>
+		</id>
+		<property name="userLoginName" type="java.lang.String">
+			<column name="user_login_name" length="30" not-null="true"/>
+		</property>
+		<property name="password" type="java.lang.String">
+			<column name="password" length="20" not-null="true"/>
+		</property>
+		<property name="lastLoginTime" type="java.sql.Timestamp">
+			<column name="last_login_time" />
+		</property>
+		<property name="userStatus" type="java.lang.Integer">
+			<column name="user_status" precision="1" scale="0" not-null="true"/>
+		</property>
+		<set name="documents" inverse="true" lazy="false">
+			<key>
+				<column name="upload_user_id"/>
+			</key>
+			<one-to-many class="com.entity.Document"/>
+		</set>
+		<one-to-one name="userDetail" class="com.entity.UserDetail" cascade="all" lazy="false"/>
+	</class>
+</hibernate-mapping>
